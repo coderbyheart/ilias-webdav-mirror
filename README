@@ -1,0 +1,11 @@
+This is a simple webdav mirror I use at Hochschule RheinMain
+to mirror the contents of our e-learning platform ILIAS to 
+a dropbox shared folder.
+
+Requirements
+
+- https://launchpad.net/python-webdav-lib
+
+Links
+
+- http://www.ilias.de/
