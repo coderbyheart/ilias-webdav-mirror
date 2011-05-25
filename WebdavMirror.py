@@ -29,8 +29,11 @@ class WebdavMirror(object):
         if not os.path.isdir(targetdir):
             raise Exception('Not a directory %s' % targetdir)
         self._targetdir = os.path.realpath(targetdir) + os.sep
-
+        self.localFileList = []
+        self.listDir(self._targetdir)
+        self.fileList = []
         self.mirrorContents()
+        self.cleanUp()
 
     def mirrorContents(self, url = None):
         "Recursive mirror the contents of the given url"
@@ -52,6 +55,7 @@ class WebdavMirror(object):
                         self.mirrorContents(newurl)
                     else:
                         target = self._targetdir + unquote(str(properties.properties['displayname'])).replace(self._basedir, '')
+                        self.fileList.append(target)
                         mtime = mktime(properties.getLastModified())
                         if not os.path.isdir(os.path.dirname(target)):
                             os.makedirs(os.path.dirname(target))
@@ -72,6 +76,22 @@ class WebdavMirror(object):
                 else:
                     raise
                 authFailures += 1
+                
+    def listDir(self, dir):
+        "Create a recursive directory listing"
+        for _ in os.listdir(dir):
+            path = dir + _
+            if os.path.isdir(path):
+                self.listDir(path +  os.sep)
+            else:
+                self.localFileList.append(path)
+    
+    def cleanUp(self):
+        "Remove local files which are no longer in the repo"
+        for localFile in self.localFileList:
+            if not localFile in self.fileList:
+                sys.stdout.write("Deleting %s\n" % localFile)
+                os.remove(localFile)          
 
 if __name__ == "__main__":
     import sys
