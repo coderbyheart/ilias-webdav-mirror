@@ -1,2 +1,7 @@
 WebdavMirror.pyc
 mirrorIlias.py
+.project
+.pydevproject
+.settings
+VIRTUALENV
+virtualenv.*

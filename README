@@ -6,6 +6,10 @@ Requirements
 
 - https://launchpad.net/python-webdav-lib
 
+You may install the requirements in a VirtualEnv by running
+
+$ make install
+
 Links
 
 - http://www.ilias.de/
